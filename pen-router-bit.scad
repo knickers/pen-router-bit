@@ -1,29 +1,37 @@
-$fn = 32;
+// Resolution
+$fn = 32; // [24:1:48]
 
-T = 0.1;
-
-outer_D = 6.35;
-outer_h = 50;
-
-inner_D = 3;
-inner_d = 2;
+// Inner sleve inner diameter
+inner_D = 3.4;
+// Inner sleve pen tip diameter
+inner_d = 2.5;
+// Inner sleve height
 inner_h = 30;
 
-spring_retainer = 10;
+// Outer sleve outer diameter
+outer_D = 6.35;
+// Outer sleve height
+outer_h = 50;
 
-mid = inner_D + (outer_D - inner_D)/2.7;
+// Spring standoff
+standoff = 10;
+
+// Tolerance between inner and outer sleve
+T = 0.2;
+
+mid = inner_D + (outer_D - inner_D)/2;
 
 module outer() {
 	difference() {
 		cylinder(d=outer_D, h=outer_h); // Outer Shell
 		union() {
-			translate([0, 0, spring_retainer])
-				cylinder(d=mid+T, h=outer_h-spring_retainer-1); // Inner Shell
+			translate([0, 0, standoff])
+				cylinder(d=mid+T, h=outer_h-standoff-1); // Inner Shell
 			translate([0, 0, outer_h-1])
 				cylinder(d1=mid+T, d2=mid, h=1); // Taper Locker
 		}
 		translate([0, 0, 1])
-			cylinder(d=inner_D+T*2, h=spring_retainer); // Spring retainer
+			cylinder(d=inner_D+T*2, h=standoff); // Spring standoff
 		translate([0, 0, outer_h-2])
 			cylinder(d=mid, h=3); // Top render helper
 	}
